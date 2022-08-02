@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,16 +71,22 @@ module.exports = require("react");
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-router-dom");
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _express = __webpack_require__(2);
+var _express = __webpack_require__(3);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _renderer = __webpack_require__(3);
+var _renderer = __webpack_require__(4);
 
 var _renderer2 = _interopRequireDefault(_renderer);
 
@@ -90,8 +96,8 @@ var app = (0, _express2.default)();
 
 app.use(_express2.default.static('public'));
 
-app.get('/', function (req, res) {
-  res.send((0, _renderer2.default)());
+app.get('*', function (req, res) {
+  res.send((0, _renderer2.default)(req));
 });
 
 app.listen(3000, function () {
@@ -99,13 +105,13 @@ app.listen(3000, function () {
 });
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 module.exports = require("express");
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -115,28 +121,74 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _server = __webpack_require__(4);
+var _server = __webpack_require__(5);
 
-var _Home = __webpack_require__(5);
+var _reactRouterDom = __webpack_require__(1);
 
-var _Home2 = _interopRequireDefault(_Home);
+var _Routes = __webpack_require__(6);
+
+var _Routes2 = _interopRequireDefault(_Routes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-module.exports = function () {
-  var content = (0, _server.renderToString)(_react2.default.createElement(_Home2.default, null));
+module.exports = function (req) {
+  console.log('req.path: ', req.path);
+  // console.log('req.url: ', req.url);
+  var content = (0, _server.renderToString)(_react2.default.createElement(
+    _reactRouterDom.StaticRouter,
+    { location: req.url, context: {} },
+    _react2.default.createElement(_Routes2.default, null)
+  ));
 
   return '\n  <!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="UTF-8" />\n    <meta http-equiv="X-UA-Compatible" content="IE=edge" />\n    <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n    <title>React Express App</title>\n  </head>\n  <body>\n    <div id="root">' + content + '</div>\n\n    <script src="/bundle.js"></script>\n  </body>\n</html>\n';
 };
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom/server");
 
 /***/ }),
-/* 5 */
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = __webpack_require__(1);
+
+var _Home = __webpack_require__(7);
+
+var _Home2 = _interopRequireDefault(_Home);
+
+var _Another = __webpack_require__(8);
+
+var _Another2 = _interopRequireDefault(_Another);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Routes = function Routes() {
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(_reactRouterDom.Route, { path: '/', exact: true, component: _Home2.default }),
+    _react2.default.createElement(_reactRouterDom.Route, { path: '/another', component: _Another2.default })
+  );
+};
+
+exports.default = Routes;
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -172,6 +224,33 @@ var Home = function Home() {
 };
 
 exports.default = Home;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Another = function Another() {
+  return _react2.default.createElement(
+    'div',
+    null,
+    'Another'
+  );
+};
+
+exports.default = Another;
 
 /***/ })
 /******/ ]);
