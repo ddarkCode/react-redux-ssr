@@ -9050,7 +9050,11 @@ var _reducers = __webpack_require__(483);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = (0, _redux.createStore)(_reducers.reducers, {}, (0, _redux.applyMiddleware)(_reduxThunk2.default));
+var _window = window,
+    INITIAL_STATE = _window.INITIAL_STATE;
+
+
+var store = (0, _redux.createStore)(_reducers.reducers, INITIAL_STATE, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
 _reactDom2.default.hydrate(_react2.default.createElement(
   _reactRedux.Provider,
@@ -38744,29 +38748,28 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = __webpack_require__(8);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Home = __webpack_require__(462);
+var _HomePage = __webpack_require__(462);
 
-var _Home2 = _interopRequireDefault(_Home);
+var _HomePage2 = _interopRequireDefault(_HomePage);
 
-var _UsersList = __webpack_require__(463);
+var _UsersListPage = __webpack_require__(463);
 
-var _UsersList2 = _interopRequireDefault(_UsersList);
+var _UsersListPage2 = _interopRequireDefault(_UsersListPage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = [{
+exports.default = [_extends({
   path: '/',
-  exact: true,
-  component: _Home2.default
-}, {
-  path: '/users',
-  component: _UsersList2.default,
-  loadData: _UsersList.loadData
-}];
+  exact: true
+}, _HomePage2.default), _extends({
+  path: '/users'
+}, _UsersListPage2.default)];
 
 /***/ }),
 /* 462 */
@@ -38785,7 +38788,7 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Home = function Home() {
+var HomePage = function HomePage() {
   return _react2.default.createElement(
     'div',
     null,
@@ -38804,7 +38807,9 @@ var Home = function Home() {
   );
 };
 
-exports.default = Home;
+exports.default = {
+  component: HomePage
+};
 
 /***/ }),
 /* 463 */
@@ -38837,16 +38842,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var UsersList = function (_Component) {
-  _inherits(UsersList, _Component);
+var UsersListPage = function (_Component) {
+  _inherits(UsersListPage, _Component);
 
-  function UsersList() {
-    _classCallCheck(this, UsersList);
+  function UsersListPage() {
+    _classCallCheck(this, UsersListPage);
 
-    return _possibleConstructorReturn(this, (UsersList.__proto__ || Object.getPrototypeOf(UsersList)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (UsersListPage.__proto__ || Object.getPrototypeOf(UsersListPage)).apply(this, arguments));
   }
 
-  _createClass(UsersList, [{
+  _createClass(UsersListPage, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.props.fetchUsers();
@@ -38882,7 +38887,7 @@ var UsersList = function (_Component) {
     }
   }]);
 
-  return UsersList;
+  return UsersListPage;
 }(_react.Component);
 
 var mapStateToProps = function mapStateToProps(state) {
@@ -38896,11 +38901,13 @@ var mapDispatchToProps = {
 };
 
 function loadData(store) {
-  console.log('Store: ', store);
   return store.dispatch((0, _actions.fetchUsers)());
 }
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UsersList);
+exports.default = {
+  loadData: loadData,
+  component: (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UsersListPage)
+};
 
 /***/ }),
 /* 464 */

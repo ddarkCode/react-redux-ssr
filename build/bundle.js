@@ -92,29 +92,28 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Home = __webpack_require__(12);
+var _HomePage = __webpack_require__(12);
 
-var _Home2 = _interopRequireDefault(_Home);
+var _HomePage2 = _interopRequireDefault(_HomePage);
 
-var _UsersList = __webpack_require__(13);
+var _UsersListPage = __webpack_require__(13);
 
-var _UsersList2 = _interopRequireDefault(_UsersList);
+var _UsersListPage2 = _interopRequireDefault(_UsersListPage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = [{
+exports.default = [_extends({
   path: '/',
-  exact: true,
-  component: _Home2.default
-}, {
-  path: '/users',
-  component: _UsersList2.default,
-  loadData: _UsersList.loadData
-}];
+  exact: true
+}, _HomePage2.default), _extends({
+  path: '/users'
+}, _UsersListPage2.default)];
 
 /***/ }),
 /* 4 */
@@ -222,8 +221,6 @@ app.get('*', function (req, res) {
     return route.loadData ? route.loadData(store) : null;
   });
 
-  console.log('Promises: ', promises);
-
   Promise.all(promises).then(function () {
     res.send((0, _renderer2.default)(req, store));
   });
@@ -264,6 +261,10 @@ var _reactRedux = __webpack_require__(2);
 
 var _reactRouterConfig = __webpack_require__(1);
 
+var _serializeJavascript = __webpack_require__(19);
+
+var _serializeJavascript2 = _interopRequireDefault(_serializeJavascript);
+
 var _Routes = __webpack_require__(3);
 
 var _Routes2 = _interopRequireDefault(_Routes);
@@ -285,7 +286,7 @@ module.exports = function (req, store) {
     )
   ));
 
-  return '\n  <!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="UTF-8" />\n    <meta http-equiv="X-UA-Compatible" content="IE=edge" />\n    <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n    <title>React Express App</title>\n  </head>\n  <body>\n    <div id="root">' + content + '</div>\n\n    <script src="/bundle.js"></script>\n  </body>\n</html>\n';
+  return '\n  <!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="UTF-8" />\n    <meta http-equiv="X-UA-Compatible" content="IE=edge" />\n    <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n    <title>React Express App</title>\n    \n  </head>\n  <body>\n    <div id="root">' + content + '</div>\n\n    <script>\n       window.INITIAL_STATE = ' + (0, _serializeJavascript2.default)(store.getState()) + '\n    </script>\n    <script src="/bundle.js"></script>\n  </body>\n</html>\n';
 };
 
 /***/ }),
@@ -317,7 +318,7 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Home = function Home() {
+var HomePage = function HomePage() {
   return _react2.default.createElement(
     'div',
     null,
@@ -336,7 +337,9 @@ var Home = function Home() {
   );
 };
 
-exports.default = Home;
+exports.default = {
+  component: HomePage
+};
 
 /***/ }),
 /* 13 */
@@ -369,16 +372,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var UsersList = function (_Component) {
-  _inherits(UsersList, _Component);
+var UsersListPage = function (_Component) {
+  _inherits(UsersListPage, _Component);
 
-  function UsersList() {
-    _classCallCheck(this, UsersList);
+  function UsersListPage() {
+    _classCallCheck(this, UsersListPage);
 
-    return _possibleConstructorReturn(this, (UsersList.__proto__ || Object.getPrototypeOf(UsersList)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (UsersListPage.__proto__ || Object.getPrototypeOf(UsersListPage)).apply(this, arguments));
   }
 
-  _createClass(UsersList, [{
+  _createClass(UsersListPage, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.props.fetchUsers();
@@ -414,7 +417,7 @@ var UsersList = function (_Component) {
     }
   }]);
 
-  return UsersList;
+  return UsersListPage;
 }(_react.Component);
 
 var mapStateToProps = function mapStateToProps(state) {
@@ -428,11 +431,13 @@ var mapDispatchToProps = {
 };
 
 function loadData(store) {
-  console.log('Store: ', store);
   return store.dispatch((0, _actions.fetchUsers)());
 }
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UsersList);
+exports.default = {
+  loadData: loadData,
+  component: (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UsersListPage)
+};
 
 /***/ }),
 /* 14 */
@@ -517,6 +522,12 @@ var userReducer = exports.userReducer = function userReducer() {
       return state;
   }
 };
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = require("serialize-javascript");
 
 /***/ })
 /******/ ]);

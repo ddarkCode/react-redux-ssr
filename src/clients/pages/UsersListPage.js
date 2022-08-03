@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { fetchUsers } from '../actions';
 
-class UsersList extends Component {
+class UsersListPage extends Component {
   componentDidMount() {
     this.props.fetchUsers();
   }
@@ -35,8 +35,10 @@ const mapDispatchToProps = {
 };
 
 export function loadData(store) {
-  console.log('Store: ', store);
   return store.dispatch(fetchUsers());
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersList);
+export default {
+  loadData,
+  component: connect(mapStateToProps, mapDispatchToProps)(UsersListPage),
+};
